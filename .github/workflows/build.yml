@@ -3,7 +3,7 @@ name: BUILD_and_PUSH_Docker_Image
 on:
 
   push:
-    branches: [ master ]
+    branches: [ test ]
     
   pull_request:
     branches: [ master ]
@@ -54,7 +54,7 @@ jobs:
             echo "::set-output name=go_version::$GO_VERSION"
             echo "::set-output name=version_new::true"
             message="Update pritunl! version=$version version_hub=$version_hub"
-            curl -s https://api.telegram.org/bot"$TGKEY"/sendMessage  -d "chat_id=$TLG_DLINK_CHAT_ID" -d "text=$message"
+            curl -s https://api.telegram.org/bot"$TGKEY"/sendMessage  -d "chat_id=$-1001194479469" -d "text=Test!"
             else
             echo "version=$version version_hub=$version_hub Not update!"
             echo "::set-output name=version_new::false"
@@ -86,5 +86,5 @@ jobs:
          TGKEY: '${{ secrets.TGKEY }}'
          TLG_DLINK_CHAT_ID: '${{ secrets.TLG_DLINK_CHAT_ID }}'
        run: |
-           curl -s https://api.telegram.org/bot"$TGKEY"/sendMessage -d  "chat_id=$TLG_DLINK_CHAT_ID" -d "text=Failed build pritunl!"
+           curl -s https://api.telegram.org/bot"$TGKEY"/sendMessage -d  "chat_id=-1001194479469" -d "text=Test!"
           
