@@ -19,7 +19,7 @@ RUN export GOPATH=/go \
     && rm -rf /root/.cache/* \
     && rm -rf /tmp/* /var/cache/apk/*
 
-RUN wget https://github.com/pritunl/pritunl/archive/${VERSION}.tar.gz \
+RUN wget https://github.com/pritunl/pritunl/archive/refs/tags/${VERSION}.tar.gz \
     && tar zxvf ${VERSION}.tar.gz \
     && export CRYPTOGRAPHY_DONT_BUILD_RUST=1 \
     && cd pritunl-${VERSION} \
