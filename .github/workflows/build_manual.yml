@@ -1,0 +1,71 @@
+name: BUILD_and_PUSH_Docker_Image
+
+on:
+
+  workflow_dispatch:
+
+jobs:
+
+  BUILD_and_PUSH_Docker_Image:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Clone this repo
+        uses: actions/checkout@v2
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        env:
+           DOCKER_HUB_SECRET: '${{ secrets.DOCKER_HUB_SECRET }}'
+        with:
+          username: skoralex
+          password: ${{ secrets.DOCKER_HUB_SECRET }}
+
+      - name: Extract version
+        id: version
+        shell: bash
+        env:
+           DOCKER_HUB_SECRET: '${{ secrets.DOCKER_HUB_SECRET }}'
+           TGKEY: '${{ secrets.TGKEY }}'
+           TLG_DLINK_CHAT_ID: '${{ secrets.TLG_DLINK_CHAT_ID }}'
+        run: |
+            docker buildx inspect --bootstrap    
+            version=$(curl -sL https://api.github.com/repos/pritunl/pritunl/releases/latest | jq -r ".tag_name")
+            version_hub=$(curl -L --fail "https://hub.docker.com/v2/repositories/skoralex/pritunl/tags/?page_size=1000" | jq '.results | .[] | .name' -r | sed 's/latest//' | sort --version-sort|tail -n 1)
+            export $(cat .env | xargs)
+            echo "::set-output name=version::$version"
+            echo "::set-output name=go_version::$GO_VERSION"
+
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          build-args: |
+            GO_VERSION=${{ steps.version.outputs.go_version }}
+            VERSION=${{ steps.version.outputs.version }}
+          platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
+          push: true
+          tags: skoralex/pritunl:latest, skoralex/pritunl:${{ steps.version.outputs.version }}
+
+  SEND_FAIL_DEPLOY:
+
+    runs-on: ubuntu-latest
+
+    if: ${{ failure() }}
+    needs: [ BUILD_and_PUSH_Docker_Image ]
+
+    steps:
+
+     - name: send to tlg fail
+       env:
+         TGKEY: '${{ secrets.TGKEY }}'
+         TLG_DLINK_CHAT_ID: '${{ secrets.TLG_DLINK_CHAT_ID }}'
+       run: |
+           curl -s https://api.telegram.org/bot"$TGKEY"/sendMessage -d  "chat_id=$TLG_DLINK_CHAT_ID" -d "text=Failed build pritunl!"
+          
