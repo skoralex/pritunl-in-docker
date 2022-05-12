@@ -12,13 +12,13 @@ RUN apk add --update git wget py3-pip \
     && rm -rf /tmp/* /var/cache/apk/*
 
 # Pritunl Build
-RUN export GOPATH=/go
-RUN	export GO111MODULE=on
-RUN    go install github.com/pritunl/pritunl-dns@latest
-RUN    go install github.com/pritunl/pritunl-web@latest
-RUN    cp /go/bin/* /usr/bin/
-RUN    rm -rf /root/.cache/*
-RUN    rm -rf /tmp/* /var/cache/apk/*
+RUN export GOPATH=/go \
+    && export GO111MODULE=on \
+    && go install github.com/pritunl/pritunl-dns@latest \
+    && go install github.com/pritunl/pritunl-web@latest \
+    && cp /go/bin/* /usr/bin/ \
+    && rm -rf /root/.cache/* \
+    && rm -rf /tmp/* /var/cache/apk/*
 
 RUN wget https://github.com/pritunl/pritunl/archive/refs/tags/${VERSION}.tar.gz \
     && tar zxvf ${VERSION}.tar.gz \
