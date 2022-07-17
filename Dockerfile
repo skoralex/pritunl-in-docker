@@ -5,7 +5,7 @@ FROM golang:${GO_VERSION}-alpine
 ARG VERSION
 # Build deps
 RUN apk add --update git wget py3-pip \
-    gcc python3 python3-dev make musl-dev linux-headers libffi-dev openssl-dev \
+    gcc python3.6 python3-dev make musl-dev linux-headers libffi-dev openssl-dev \
     py-setuptools openssl procps ca-certificates openvpn ipset \
     && pip install --upgrade pip \
     && rm -rf /root/.cache/* \
