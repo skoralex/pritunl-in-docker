@@ -4,14 +4,15 @@ FROM golang:${GO_VERSION}-alpine3.16
 
 ARG VERSION
 # Build deps
-RUN apk add --update python3 git wget py3-pip \
-    gcc python3-dev make musl-dev linux-headers libffi-dev openssl-dev \
+RUN apk add python3-dev=3.6.9-r3 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.9/main
+RUN exit 1
+RUN python3 --version
+RUN apk add --update git wget py3-pip \
+    gcc make musl-dev linux-headers libffi-dev openssl-dev \
     py-setuptools openssl procps ca-certificates openvpn ipset \
     && pip install --upgrade pip \
     && rm -rf /root/.cache/* \
-    && rm -rf /tmp/* /var/cache/apk/* \
-    && python3 --version \
-    && exit 1
+    && rm -rf /tmp/* /var/cache/apk/*
 
 # Pritunl Build
 RUN export GOPATH=/go \
