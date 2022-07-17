@@ -1,11 +1,10 @@
 ARG GO_VERSION
 
-FROM golang:${GO_VERSION}-alpine
+FROM golang:${GO_VERSION}-alpine3.16-alpine
 
 ARG VERSION
 # Build deps
-RUN apk add --update python3.6 --repository=http://dl-cdn.alpinelinux.org/alpine/v3.15/main \
-    git wget py3-pip \
+RUN apk add --update python3 git wget py3-pip \
     gcc python3-dev make musl-dev linux-headers libffi-dev openssl-dev \
     py-setuptools openssl procps ca-certificates openvpn ipset \
     && pip install --upgrade pip \
