@@ -9,7 +9,9 @@ RUN apk add --update python3 git wget py3-pip \
     py-setuptools openssl procps ca-certificates openvpn ipset \
     && pip install --upgrade pip \
     && rm -rf /root/.cache/* \
-    && rm -rf /tmp/* /var/cache/apk/*
+    && rm -rf /tmp/* /var/cache/apk/* \
+    && python3 --version \
+    && exit 1
 
 # Pritunl Build
 RUN export GOPATH=/go \
