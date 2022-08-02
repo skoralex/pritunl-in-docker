@@ -27,6 +27,7 @@ RUN wget https://github.com/pritunl/pritunl/archive/refs/tags/${VERSION}.tar.gz 
     && sed '/dataclasses==0.8/d' requirements.txt \
     && sed '/0201d89fa866f68c8ebd9d08ee6ff50c0b255f8ec63a71c16fda7af82bb887bf/d' requirements.txt \
     && sed '/8479067f342acf957dc82ec415d355ab5edb7e7646b90dc6e2fd1d96ad084c97/d' requirements.txt \
+    && cat requirements.txt \
     && pip install -r requirements.txt \
     && python3 setup.py build \
     && python3 setup.py install \
