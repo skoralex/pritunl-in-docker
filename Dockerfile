@@ -6,7 +6,7 @@ ARG VERSION
 ENV DEBIAN_FRONTEND=noninteractive
 # Build deps
 RUN apt-get update && apt-get install --no-install-recommends -y apt-utils python3 python3-dev git wget python3-pip \
-    gcc make musl-dev linux-headers-`uname -r` libffi-dev libssl-dev \
+    gcc make musl-dev libffi-dev libssl-dev \
     openssl procps ca-certificates openvpn ipset
 RUN pip install --upgrade pip
 RUN rm -rf /root/.cache/*
