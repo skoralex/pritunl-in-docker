@@ -7,11 +7,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Build deps
 RUN apt-get update && apt-get install --no-install-recommends -y apt-utils python3 python3-dev git wget py3-pip \
     gcc make musl-dev linux-headers libffi-dev openssl-dev \
-    py-setuptools openssl procps ca-certificates openvpn ipset \
-    && pip install --upgrade pip \
-    && rm -rf /root/.cache/* \
-    && apt autoremove -y \
-	&& rm -rf /var/lib/apt/lists/*
+    py-setuptools openssl procps ca-certificates openvpn ipset
+RUN pip install --upgrade pip
+RUN rm -rf /root/.cache/*
+RUN apt autoremove -y
+RUN rm -rf /var/lib/apt/lists/*
     #&& rm -rf /tmp/* /var/cache/apk/*
 
 # Pritunl Build
