@@ -10,6 +10,8 @@ RUN apt-get update && apt-get install --no-install-recommends -y apt-utils pytho
     py-setuptools openssl procps ca-certificates openvpn ipset \
     && pip install --upgrade pip \
     && rm -rf /root/.cache/* \
+    && apt autoremove -y \
+	&& rm -rf /var/lib/apt/lists/*
     #&& rm -rf /tmp/* /var/cache/apk/*
 
 # Pritunl Build
