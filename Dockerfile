@@ -1,6 +1,6 @@
 ARG GO_VERSION
 
-FROM golang:${GO_VERSION}.0-alpine3.17
+FROM golang:${GO_VERSION}-alpine3.17
 
 ARG VERSION
 # Build deps
