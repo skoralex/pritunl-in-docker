@@ -6,7 +6,7 @@ ARG VERSION
 # Build deps
 RUN apk add --update python3 python3-dev git wget py3-pip \
     gcc make musl-dev linux-headers libffi-dev openssl-dev \
-    py-setuptools openssl procps ca-certificates openvpn ipset \
+    py-setuptools openssl procps ca-certificates openvpn ipset cryptography \
     && pip install --upgrade pip \
     && rm -rf /root/.cache/* \
     && rm -rf /tmp/* /var/cache/apk/*
