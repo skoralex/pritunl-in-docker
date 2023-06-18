@@ -3,6 +3,7 @@ services:
   mongo:
     container_name: mongo
     image: mongo:${MONGO_VERSION}
+    restart: unless-stopped
     networks:
       - pritunl
     volumes:
@@ -10,6 +11,7 @@ services:
   pritunl:
     container_name: pritunl
     image: skoralex/pritunl:${VERSION}
+    restart: unless-stopped
     depends_on:
       - mongo
     networks:
