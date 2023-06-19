@@ -5,8 +5,8 @@ FROM golang:${GO_VERSION}-alpine3.17
 ARG VERSION
 # Build deps
 RUN apk add --update python3 python3-dev git wget py3-pip \
-    gcc make musl-dev linux-headers libffi-dev openssl-dev \
-    py-setuptools openssl procps ca-certificates openvpn ipset \
+    gcc make musl-dev linux-headers libffi-dev openssl-dev openvpn ipset \
+    py-setuptools openssl procps ca-certificates policycoreutils-python-utils \
     && python3 -m ensurepip --upgrade \
     && python3 -m pip install --upgrade pip \
     && rm -rf /root/.cache/* \
@@ -26,7 +26,7 @@ RUN wget https://github.com/pritunl/pritunl/archive/refs/tags/${VERSION}.tar.gz 
     && export CRYPTOGRAPHY_DONT_BUILD_RUST=1 \
     && cd pritunl-${VERSION} \
     && cat requirements.txt \
-    && pip install -r requirements.txt \
+    && pip3 install --require-hashes -r requirements.txt \
     && python3 setup.py build \
     && python3 setup.py install \
     && cd .. \
