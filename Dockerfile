@@ -4,10 +4,15 @@ FROM golang:${GO_VERSION}-alpine3.17
 
 ARG VERSION
 # Build deps
-RUN apk add --update python3 python3-dev git wget py3-pip \
-    gcc make musl-dev linux-headers libffi-dev openssl-dev \
-    py-setuptools openssl procps ca-certificates openvpn ipset \
-    && pip install --upgrade pip \
+RUN apk add --update python3 python3-dev cargo curl gcc git \
+    libffi-dev linux-headers make rust \
+    musl-dev openssl-dev py3-pip \
+    bash ca-certificates ipset iptables \
+    ip6tables openssl openvpn procps \
+    py3-dnspython py3-requests py3-setuptools py3-six \
+    tzdata wireguard-tools \
+    && python3 -m ensurepip --upgrade \
+    && python3 -m pip install --upgrade pip \
     && rm -rf /root/.cache/* \
     && rm -rf /tmp/* /var/cache/apk/*
 
@@ -25,8 +30,9 @@ RUN wget https://github.com/pritunl/pritunl/archive/refs/tags/${VERSION}.tar.gz 
     && export CRYPTOGRAPHY_DONT_BUILD_RUST=1 \
     && cd pritunl-${VERSION} \
     && cat requirements.txt \
-    && pip install -r requirements.txt \
+    && sed -i -e '/dataclasses==0.8/,+2d' -e '/packaging==20.9/,+2d' requirements.txt \
     && python3 setup.py build \
+    && pip3 install -r requirements.txt \
     && python3 setup.py install \
     && cd .. \
     && rm -rf *${VERSION}* \

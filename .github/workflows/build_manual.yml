@@ -1,4 +1,4 @@
-name: BUILD_and_PUSH_Docker_Image
+name: MANUAL_BUILD_and_PUSH_Docker_Image
 
 on:
 
@@ -49,9 +49,9 @@ jobs:
           build-args: |
             GO_VERSION=${{ steps.version.outputs.go_version }}
             VERSION=${{ steps.version.outputs.version }}
-          platforms: linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6
+          platforms: linux/amd64
           push: true
-          tags: skoralex/pritunl:latest, skoralex/pritunl:${{ steps.version.outputs.version }}
+          tags: skoralex/pritunl:test
 
   SEND_FAIL_DEPLOY:
 
