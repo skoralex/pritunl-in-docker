@@ -1,4 +1,4 @@
-name: BUILD_and_PUSH_Docker_Image
+name: MANUAL_BUILD_and_PUSH_Docker_Image
 
 on:
 
